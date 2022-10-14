@@ -43,8 +43,8 @@ public class WordSearch {
 				if (uppercaseWord.charAt(0)== board[x][y]) {
 					var firstChar = new Coordinate(x, y);	
 					var finalChar = FindedWord(uppercaseWord, firstChar);
-					if (finalChar != null) {
-						return Optional.of(finalChar);
+					if (finalChar.isPresent()) {
+						return finalChar;
 					}
 				}
 			}		
@@ -52,7 +52,7 @@ public class WordSearch {
 		return Optional.empty(); 
 	}
 
-	private Range FindedWord(String word, Coordinate firstChar) {
+	private Optional<Range> FindedWord(String word, Coordinate firstChar) {
 		for( var i = 0; i < displacementsX.length; i++) {			
 			var builder = new StringBuilder();
 			builder.append(board[firstChar.row()][firstChar.column()]);
@@ -69,10 +69,11 @@ public class WordSearch {
 			
 			var findWord = builder.toString();
 			if(word.equals(findWord)) {
-				return new Range(firstChar , finalChar);
+				var wordRange =  new Range(firstChar , finalChar);
+				return Optional.of(wordRange);
 			}
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	
